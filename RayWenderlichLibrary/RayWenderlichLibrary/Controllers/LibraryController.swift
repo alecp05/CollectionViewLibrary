@@ -62,6 +62,7 @@ class LibraryController: UIViewController {
         
         self.collectionView.collectionViewLayout = self.configureCollectionViewLayout()
         self.collectionView.register(TutorialCell.self, forCellWithReuseIdentifier: TutorialCell.reuseIdentifier)
+        self.collectionView.register(TitleSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleSupplementaryView.reuseIdentifier)
         
         self.view.addSubview(self.collectionView)
         self.makeConstraints()
@@ -96,6 +97,11 @@ class LibraryController: UIViewController {
             section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
             section.interGroupSpacing = 10
             
+            // create header
+            let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
+            let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .topLeading)
+            section.boundarySupplementaryItems = [sectionHeader]
+            
             return section
         }
         
@@ -114,6 +120,20 @@ class LibraryController: UIViewController {
             cell.thumbnailImageView.backgroundColor = tutorial.imageBackgroundColor
             
             return cell
+        }
+        
+        self.dataSource.supplementaryViewProvider = { [weak self](collectionView: UICollectionView, kind: String, indexPath: IndexPath) -> UICollectionReusableView? in
+            
+            if let self = self, let titleSupplementaryView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleSupplementaryView.reuseIdentifier, for: indexPath) as? TitleSupplementaryView {
+                
+                // get collection from snapshot
+                let tutorialCollection = self.dataSource.snapshot().sectionIdentifiers[indexPath.section]
+                titleSupplementaryView.textLabel.text = tutorialCollection.title
+                
+                return titleSupplementaryView
+            } else {
+                return nil
+            }
         }
     }
     
