@@ -35,66 +35,85 @@
 
 import UIKit
 
+// /////////////////////////////////////////////////////////////////////////
+// MARK: - QueuedTutorialController -
+// /////////////////////////////////////////////////////////////////////////
+
 class QueuedTutorialController: UIViewController {
-
-  lazy var dateFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "MMM d"
-    return formatter
-  }()
-  
-  @IBOutlet var deleteButton: UIBarButtonItem!
-  @IBOutlet var updateButton: UIBarButtonItem!
-  @IBOutlet var applyUpdatesButton: UIBarButtonItem!
-  @IBOutlet weak var collectionView: UICollectionView!
-
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    setupView()
-  }
-  
-  private func setupView() {
-    self.title = "Queue"
-    navigationItem.leftBarButtonItem = editButtonItem
-    navigationItem.rightBarButtonItem = nil
     
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Properties
     
-  }
+    lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d"
+        return formatter
+    }()
+    
+    private lazy var deleteButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.trash, target: self, action: #selector(deleteButtonClicked))
+    private lazy var updateButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.clockwise"), style: .plain,target: self, action: #selector(deleteButtonClicked))
+    private lazy var applyUpdatesButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "play.fill"), style: .plain, target: self, action: #selector(deleteButtonClicked))
+    
+    private var collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - QueuedTutorialController
+    // /////////////////////////////////////////////////////////////////////////
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view.backgroundColor = .white
+        self.setupView()
+    }
+    
+    private func setupView() {
+        self.title = "Queue"
+        self.navigationItem.leftBarButtonItem = editButtonItem
+        navigationItem.rightBarButtonItems = [self.applyUpdatesButton, self.updateButton]
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Functions
+    
+    @objc
+    func deleteButtonClicked() {
+        print("clicked")
+    }
 }
 
 // MARK: - Queue Events -
 
 extension QueuedTutorialController {
-  override func setEditing(_ editing: Bool, animated: Bool) {
-    super.setEditing(editing, animated: animated)
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        
+        if isEditing {
+            navigationItem.rightBarButtonItems = nil
+            navigationItem.rightBarButtonItem = self.deleteButton
+        } else {
+            navigationItem.rightBarButtonItem = nil
+            navigationItem.rightBarButtonItems = [self.applyUpdatesButton, self.updateButton]
+        }
+        
+        collectionView.allowsMultipleSelection = true
+        collectionView.indexPathsForVisibleItems.forEach { indexPath in
+            guard let cell = collectionView.cellForItem(at: indexPath) as? QueueCell else { return }
+            cell.isEditing = isEditing
+            
+            if !isEditing {
+                cell.isSelected = false
+            }
+        }
+    }
     
-    if isEditing {
-      navigationItem.rightBarButtonItems = nil
-      navigationItem.rightBarButtonItem = deleteButton
-    } else {
-      navigationItem.rightBarButtonItem = nil
-      navigationItem.rightBarButtonItems = [self.applyUpdatesButton, self.updateButton]
+    @IBAction func deleteSelectedItems() {
+        
     }
-
-    collectionView.allowsMultipleSelection = true
-    collectionView.indexPathsForVisibleItems.forEach { indexPath in
-      guard let cell = collectionView.cellForItem(at: indexPath) as? QueueCell else { return }
-      cell.isEditing = isEditing
-      
-      if !isEditing {
-        cell.isSelected = false
-      }
+    
+    @IBAction func triggerUpdates() {
+        
     }
-  }
-
-  @IBAction func deleteSelectedItems() {
-
-  }
-
-  @IBAction func triggerUpdates() {
-
-  }
-
-  @IBAction func applyUpdates() {
-  }
+    
+    @IBAction func applyUpdates() {
+    }
 }

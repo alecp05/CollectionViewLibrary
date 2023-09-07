@@ -35,17 +35,29 @@
 
 
 import UIKit
+import SnapKit
 
-final class LibraryController: UIViewController {
-  
-  @IBOutlet weak var collectionView: UICollectionView!
-  
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    setupView()
-  }
-  
-  private func setupView() {
-    self.title = "Library"
-  }
+// /////////////////////////////////////////////////////////////////////////
+// MARK: - LibraryController -
+// /////////////////////////////////////////////////////////////////////////
+
+class LibraryController: UIViewController {
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Properties
+    
+    private var collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - LibraryController
+    // /////////////////////////////////////////////////////////////////////////
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.view.backgroundColor = .white
+        self.title = "Library"
+        
+        self.view.addSubview(self.collectionView)
+    }
 }
