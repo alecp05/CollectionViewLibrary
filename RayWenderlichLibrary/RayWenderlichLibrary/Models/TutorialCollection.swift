@@ -35,7 +35,27 @@
 
 import Foundation
 
-struct TutorialCollection {
-  let title: String
-  let tutorials: [Tutorial]
+// /////////////////////////////////////////////////////////////////////////
+// MARK: - TutorialCollection -
+// /////////////////////////////////////////////////////////////////////////
+
+struct TutorialCollection: Decodable, Hashable {
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Properties
+    
+    let identifier = UUID().uuidString
+    let title: String
+    let tutorials: [Tutorial]
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Functions
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.identifier)
+    }
+    
+    static func == (lhs: TutorialCollection, rhs: TutorialCollection) -> Bool {
+        return lhs.title == rhs.title
+    }
 }

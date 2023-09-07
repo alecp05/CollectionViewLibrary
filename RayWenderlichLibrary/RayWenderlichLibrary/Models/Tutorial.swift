@@ -35,36 +35,46 @@
 
 import UIKit
 
-class Tutorial {
-  let title: String
-  let thumbnail: String
-  let artworkColor: String
-  var isQueued: Bool
-  let publishDate: Date
-  let content: [Section]
-  var updateCount: Int
-  
-  init(title: String, thumbnail: String, artworkColor: String, isQueued: Bool, publishDate: Date, content: [Section], updateCount: Int) {
-    self.title = title
-    self.thumbnail = thumbnail
-    self.artworkColor = artworkColor
-    self.isQueued = isQueued
-    self.publishDate = publishDate
-    self.content = content
-    self.updateCount = updateCount
-  }
+// /////////////////////////////////////////////////////////////////////////
+// MARK: - Tutorial -
+// /////////////////////////////////////////////////////////////////////////
+
+class Tutorial: Decodable, Hashable {
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Properties
+    
+    let identifier = UUID().uuidString
+    let title: String
+    let thumbnail: String
+    let artworkColor: String
+    var isQueued: Bool
+    let publishDate: Date
+    let content: [Section]
+    var updateCount: Int
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Functions
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.identifier)
+    }
+    
+    static func == (lhs: Tutorial, rhs: Tutorial) -> Bool {
+        return lhs.title == rhs.title && lhs.publishDate == rhs.publishDate
+    }
 }
 
 extension Tutorial {
-  var image: UIImage? {
-    return UIImage(named: thumbnail)
-  }
-  
-  var imageBackgroundColor: UIColor? {
-    return UIColor(hexString: artworkColor)
-  }
-  
-  func formattedDate(using formatter: DateFormatter) -> String? {
-    return formatter.string(from: publishDate)
-  }
+    var image: UIImage? {
+        return UIImage(named: thumbnail)
+    }
+    
+    var imageBackgroundColor: UIColor? {
+        return UIColor(hexString: artworkColor)
+    }
+    
+    func formattedDate(using formatter: DateFormatter) -> String? {
+        return formatter.string(from: publishDate)
+    }
 }

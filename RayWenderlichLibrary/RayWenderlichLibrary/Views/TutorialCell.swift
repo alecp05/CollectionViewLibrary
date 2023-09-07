@@ -34,10 +34,68 @@
 ///
 
 import UIKit
+import SnapKit
+
+// /////////////////////////////////////////////////////////////////////////
+// MARK: - TutorialCell -
+// /////////////////////////////////////////////////////////////////////////
 
 class TutorialCell: UICollectionViewCell {
-  static let reuseIdentifier = String(describing: TutorialCell.self)
-  
-  @IBOutlet weak var thumbnailImageView: UIImageView!
-  @IBOutlet weak var titleLabel: UILabel!
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Properties
+    
+    static let reuseIdentifier = String(describing: TutorialCell.self)
+    
+    var thumbnailImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 10
+        imageView.isOpaque = false
+        return imageView
+    }()
+    
+    var titleLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        label.font = UIFont.preferredFont(forTextStyle: .title3)
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Life Cycle
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        self.addSubview(self.thumbnailImageView)
+        self.addSubview(self.titleLabel)
+        
+        self.makeConstraints()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - TutorialCell
+    
+    func makeConstraints() {
+        
+        self.thumbnailImageView.snp.makeConstraints() { make in
+            make.top.equalToSuperview()
+            make.horizontalEdges.equalToSuperview()
+            make.height.equalTo(192)
+        }
+        
+        self.titleLabel.snp.makeConstraints() { make in
+            make.leading.equalTo(self.thumbnailImageView.snp.leading).inset(16)
+            make.bottom.equalTo(self.thumbnailImageView.snp.bottom).inset(16)
+            make.trailing.equalToSuperview().inset(16)
+        }
+    }
+    
 }

@@ -35,7 +35,26 @@
 
 import Foundation
 
-struct Video {
-  let url: String
-  let title: String
+// /////////////////////////////////////////////////////////////////////////
+// MARK: - Video -
+// /////////////////////////////////////////////////////////////////////////
+
+struct Video: Decodable, Hashable, Equatable {
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Properties
+    
+    let url: String
+    let title: String
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Functions
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.url)
+    }
+    
+    static func == (lhs: Video, rhs: Video) -> Bool {
+        return lhs.url == rhs.url
+    }
 }

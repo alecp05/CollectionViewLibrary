@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		70DADE282AA9F95100335039 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70DADE272AA9F95100335039 /* DataSource.swift */; };
 		8FD7A2B80C064C350D2C9160 /* Pods_RayWenderlichLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 482BC9C8251376DB7C9FB16B /* Pods_RayWenderlichLibrary.framework */; };
 		97D3041723615DA600307413 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D3041623615DA600307413 /* AppDelegate.swift */; };
 		97D3041923615DA600307413 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D3041823615DA600307413 /* SceneDelegate.swift */; };
@@ -31,6 +32,7 @@
 		2B4785FBA119F45BC85D01C4 /* Pods-RayWenderlichLibrary.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RayWenderlichLibrary.release.xcconfig"; path = "Target Support Files/Pods-RayWenderlichLibrary/Pods-RayWenderlichLibrary.release.xcconfig"; sourceTree = "<group>"; };
 		420F742930263FA156B1ED1F /* Pods-RayWenderlichLibrary.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RayWenderlichLibrary.debug.xcconfig"; path = "Target Support Files/Pods-RayWenderlichLibrary/Pods-RayWenderlichLibrary.debug.xcconfig"; sourceTree = "<group>"; };
 		482BC9C8251376DB7C9FB16B /* Pods_RayWenderlichLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RayWenderlichLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		70DADE272AA9F95100335039 /* DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
 		97D3041323615DA600307413 /* RWLibrary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RWLibrary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97D3041623615DA600307413 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		97D3041823615DA600307413 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				97D3043D2361610100307413 /* Tutorials.plist */,
+				70DADE272AA9F95100335039 /* DataSource.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -282,6 +285,7 @@
 				97D3043A236160C100307413 /* TutorialCollection.swift in Sources */,
 				97D304462361626100307413 /* ContentCell.swift in Sources */,
 				97D304422361623800307413 /* GradientView.swift in Sources */,
+				70DADE282AA9F95100335039 /* DataSource.swift in Sources */,
 				97D3043223615F7C00307413 /* LibraryController.swift in Sources */,
 				97D30440236161AC00307413 /* QueuedTutorialController.swift in Sources */,
 				97D3043423615FC700307413 /* TutorialDetailController.swift in Sources */,

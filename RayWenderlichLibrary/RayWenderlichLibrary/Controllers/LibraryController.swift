@@ -47,6 +47,8 @@ class LibraryController: UIViewController {
     // MARK: - Properties
     
     private var collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private lazy var dataSource: UICollectionViewDiffableDataSource<TutorialCollection, Tutorial> = UICollectionViewDiffableDataSource(collectionView: self.collectionView, cellProvider: {_,_,_  in return nil })
+    private let tutorialCollections = DataSource.shared.tutorials
     
     // /////////////////////////////////////////////////////////////////////////
     // MARK: - LibraryController
@@ -58,6 +60,71 @@ class LibraryController: UIViewController {
         self.view.backgroundColor = .white
         self.title = "Library"
         
+        self.collectionView.collectionViewLayout = self.configureCollectionViewLayout()
+        self.collectionView.register(TutorialCell.self, forCellWithReuseIdentifier: TutorialCell.reuseIdentifier)
+        
         self.view.addSubview(self.collectionView)
+        self.makeConstraints()
+        
+        self.configureDataSource()
+        self.configureSnapshot()
+    }
+    
+    func makeConstraints() {
+        
+        self.collectionView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Functions
+    
+    func configureCollectionViewLayout() -> UICollectionViewCompositionalLayout {
+        let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+            
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 10)
+            
+            
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.6), heightDimension: .fractionalHeight(0.3))
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+            section.interGroupSpacing = 10
+            
+            return section
+        }
+        
+        return UICollectionViewCompositionalLayout(sectionProvider: sectionProvider)
+    }
+    
+    func configureDataSource() {
+        self.dataSource = UICollectionViewDiffableDataSource<TutorialCollection, Tutorial>(collectionView: self.collectionView) { (collectionView: UICollectionView, indxPath: IndexPath, tutorial: Tutorial) -> UICollectionViewCell? in
+            
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TutorialCell.reuseIdentifier, for: indxPath) as? TutorialCell else {
+                return nil
+            }
+            
+            cell.titleLabel.text = tutorial.title
+            cell.thumbnailImageView.image = tutorial.image
+            cell.thumbnailImageView.backgroundColor = tutorial.imageBackgroundColor
+            
+            return cell
+        }
+    }
+    
+    func configureSnapshot() {
+        var currentSnapshot = NSDiffableDataSourceSnapshot<TutorialCollection, Tutorial>()
+        
+        self.tutorialCollections.forEach { collection in
+            currentSnapshot.appendSections([collection])
+            currentSnapshot.appendItems(collection.tutorials)
+        }
+        
+        self.dataSource.apply(currentSnapshot, animatingDifferences: false)
     }
 }
