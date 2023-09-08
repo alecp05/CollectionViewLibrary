@@ -59,3 +59,9 @@ struct TutorialCollection: Decodable, Hashable {
         return lhs.title == rhs.title
     }
 }
+
+extension TutorialCollection {
+    var queuedTutorials: [Tutorial] {
+        return self.tutorials.filter( { $0.isQueued } )
+    }
+}

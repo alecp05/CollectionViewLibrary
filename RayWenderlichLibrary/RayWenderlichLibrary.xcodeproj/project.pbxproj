@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		70478A292AAB123A00075E47 /* QueuedSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70478A282AAB123A00075E47 /* QueuedSection.swift */; };
 		70DADE282AA9F95100335039 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70DADE272AA9F95100335039 /* DataSource.swift */; };
 		70DADE2A2AAA289400335039 /* TitleSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70DADE292AAA289400335039 /* TitleSupplementaryView.swift */; };
 		8FD7A2B80C064C350D2C9160 /* Pods_RayWenderlichLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 482BC9C8251376DB7C9FB16B /* Pods_RayWenderlichLibrary.framework */; };
@@ -33,6 +34,7 @@
 		2B4785FBA119F45BC85D01C4 /* Pods-RayWenderlichLibrary.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RayWenderlichLibrary.release.xcconfig"; path = "Target Support Files/Pods-RayWenderlichLibrary/Pods-RayWenderlichLibrary.release.xcconfig"; sourceTree = "<group>"; };
 		420F742930263FA156B1ED1F /* Pods-RayWenderlichLibrary.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RayWenderlichLibrary.debug.xcconfig"; path = "Target Support Files/Pods-RayWenderlichLibrary/Pods-RayWenderlichLibrary.debug.xcconfig"; sourceTree = "<group>"; };
 		482BC9C8251376DB7C9FB16B /* Pods_RayWenderlichLibrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RayWenderlichLibrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		70478A282AAB123A00075E47 /* QueuedSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueuedSection.swift; sourceTree = "<group>"; };
 		70DADE272AA9F95100335039 /* DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
 		70DADE292AAA289400335039 /* TitleSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleSupplementaryView.swift; sourceTree = "<group>"; };
 		97D3041323615DA600307413 /* RWLibrary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RWLibrary.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -118,6 +120,7 @@
 				97D304352361607100307413 /* Tutorial.swift */,
 				97D30439236160C100307413 /* TutorialCollection.swift */,
 				97D3043B236160DC00307413 /* Video.swift */,
+				70478A282AAB123A00075E47 /* QueuedSection.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -301,6 +304,7 @@
 				70DADE2A2AAA289400335039 /* TitleSupplementaryView.swift in Sources */,
 				97D3042C23615E5800307413 /* UIColor+Extensions.swift in Sources */,
 				97D3043C236160DC00307413 /* Video.swift in Sources */,
+				70478A292AAB123A00075E47 /* QueuedSection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -35,28 +35,101 @@
 
 import UIKit
 
+// /////////////////////////////////////////////////////////////////////////
+// MARK: - QueueCell -
+// /////////////////////////////////////////////////////////////////////////
+
 class QueueCell: UICollectionViewCell {
-  static let reuseIdentifier = String(describing: QueueCell.self)
-  
-  var isEditing: Bool = false {
-    didSet {
-      checkboxImageView.isHidden = !isEditing
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Properties
+    
+    static let reuseIdentifier = String(describing: QueueCell.self)
+    
+    var isEditing: Bool = false {
+        didSet {
+            self.checkboxImageView.isHidden = !self.isEditing
+        }
     }
-  }
-
-  override var isSelected: Bool {
-    didSet {
-      if isSelected{
-        checkboxImageView.image = UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .large))
-      } else  {
-        checkboxImageView.image = UIImage(systemName: "checkmark.circle", withConfiguration: UIImage.SymbolConfiguration(scale: .large))
-      }
+    
+    override var isSelected: Bool {
+        didSet {
+            if self.isSelected{
+                self.checkboxImageView.image = UIImage(systemName: "checkmark.circle.fill", withConfiguration: UIImage.SymbolConfiguration(scale: .large))
+            } else  {
+                self.checkboxImageView.image = UIImage(systemName: "checkmark.circle", withConfiguration: UIImage.SymbolConfiguration(scale: .large))
+            }
+        }
     }
-  }
-
-  @IBOutlet weak var thumbnailImageView: UIImageView!
-  @IBOutlet weak var titleLabel: UILabel!
-  @IBOutlet weak var publishDateLabel: UILabel!
-  @IBOutlet weak var checkboxImageView: UIImageView!
+    
+    var thumbnailImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
+    var titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.preferredFont(forTextStyle: .title2)
+        return label
+    }()
+    var publishDateLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.preferredFont(forTextStyle: .body)
+        return label
+    }()
+    var checkboxImageView: UIImageView = {
+        let imageView = UIImageView()
+        
+        return imageView
+    }()
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Life Cycle
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.contentView.backgroundColor = .white
+        self.contentView.layer.cornerRadius = 10
+        
+        self.addSubview(self.thumbnailImageView)
+        self.addSubview(self.titleLabel)
+        self.addSubview(self.publishDateLabel)
+        self.addSubview(self.checkboxImageView)
+        
+        self.makeConstraints()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - QueueCell
+    
+    func makeConstraints() {
+        
+        self.thumbnailImageView.snp.makeConstraints { make in
+            make.top.leading.bottom.equalToSuperview().inset(10)
+            make.width.equalTo(self.thumbnailImageView.snp.height)
+        }
+        
+        self.titleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(10)
+            make.leading.equalTo(self.thumbnailImageView.snp.trailing).offset(10)
+            make.trailing.equalToSuperview()
+        }
+        
+        self.publishDateLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.titleLabel.snp.bottom).offset(10)
+            make.leading.equalTo(self.thumbnailImageView.snp.trailing).offset(10)
+            make.trailing.equalToSuperview()
+        }
+        
+        self.checkboxImageView.snp.makeConstraints { make in
+            make.bottom.trailing.equalToSuperview().inset(10)
+        }
+    }
 }
 

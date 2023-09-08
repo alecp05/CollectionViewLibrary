@@ -67,10 +67,11 @@ final class TutorialDetailViewController: UIViewController {
         return label
     }()
     
-    var queueButton: UIButton = {
+    lazy var queueButton: UIButton = {
         let button = UIButton()
         button.setTitle("Add to queue", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
+        button.addTarget(self, action: #selector(toggleQueued), for: .touchUpInside)
         return button
     }()
     
@@ -94,7 +95,7 @@ final class TutorialDetailViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     // /////////////////////////////////////////////////////////////////////////
     // MARK: - TutorialDetailViewController
     // /////////////////////////////////////////////////////////////////////////
@@ -122,6 +123,8 @@ final class TutorialDetailViewController: UIViewController {
         self.tutorialCoverImageView.backgroundColor = self.tutorial.imageBackgroundColor
         self.titleLabel.text = self.tutorial.title
         self.publishDateLabel.text = self.tutorial.formattedDate(using: self.dateFormatter)
+        let buttonTitle = tutorial.isQueued ? "Remove from queue" : "Add to queue"
+        self.queueButton.setTitle(buttonTitle, for: .normal)
         
         self.view.addSubview(self.tutorialCoverImageView)
         self.view.addSubview(self.titleLabel)
@@ -163,17 +166,21 @@ final class TutorialDetailViewController: UIViewController {
         }
     }
     
-//    @IBAction func toggleQueued() {
-//        UIView.performWithoutAnimation {
-//            if tutorial.isQueued {
-//                queueButton.setTitle("Remove from queue", for: .normal)
-//            } else {
-//                queueButton.setTitle("Add to queue", for: .normal)
-//            }
-//
-//            self.queueButton.layoutIfNeeded()
-//        }
-//    }
+    @objc
+    func toggleQueued() {
+        
+        self.tutorial.isQueued.toggle()
+        
+        if self.tutorial.isQueued {
+            self.queueButton.setTitle("Remove from queue", for: .normal)
+        } else {
+            self.queueButton.setTitle("Add to queue", for: .normal)
+        }
+        
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - CollectionView Configuration
     
     // can by styled how we want
     func configureCollectionView() -> UICollectionViewLayout {

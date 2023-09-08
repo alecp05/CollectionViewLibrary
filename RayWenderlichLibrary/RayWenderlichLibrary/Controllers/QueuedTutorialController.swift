@@ -34,6 +34,7 @@
 ///
 
 import UIKit
+import SnapKit
 
 // /////////////////////////////////////////////////////////////////////////
 // MARK: - QueuedTutorialController -
@@ -50,11 +51,12 @@ class QueuedTutorialController: UIViewController {
         return formatter
     }()
     
-    private lazy var deleteButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.trash, target: self, action: #selector(deleteButtonClicked))
+    private lazy var deleteButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.trash, target: self, action: #selector(deleteSelectedItems))
     private lazy var updateButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.clockwise"), style: .plain,target: self, action: #selector(deleteButtonClicked))
     private lazy var applyUpdatesButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "play.fill"), style: .plain, target: self, action: #selector(deleteButtonClicked))
     
     private var collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private lazy var dataSource: UICollectionViewDiffableDataSource<QueuedSection, Tutorial> = UICollectionViewDiffableDataSource(collectionView: self.collectionView, cellProvider: {_,_,_  in return nil })
     
     // /////////////////////////////////////////////////////////////////////////
     // MARK: - QueuedTutorialController
@@ -64,12 +66,35 @@ class QueuedTutorialController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.setupView()
+        
+        self.makeConstraints()
     }
     
     private func setupView() {
         self.title = "Queue"
         self.navigationItem.leftBarButtonItem = editButtonItem
         navigationItem.rightBarButtonItems = [self.applyUpdatesButton, self.updateButton]
+        
+        self.collectionView.collectionViewLayout = self.configureCollectionViewLayout()
+        self.collectionView.register(QueueCell.self, forCellWithReuseIdentifier: QueueCell.reuseIdentifier)
+        self.collectionView.backgroundColor = .lightGray.withAlphaComponent(0.1)
+        self.configureDataSource()
+        
+        self.view.addSubview(self.collectionView)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.configureSnapshot()
+    }
+    
+    func makeConstraints() {
+        self.collectionView.snp.makeConstraints { make in
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            make.horizontalEdges.equalToSuperview()
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
+        }
     }
     
     // /////////////////////////////////////////////////////////////////////////
@@ -79,7 +104,67 @@ class QueuedTutorialController: UIViewController {
     func deleteButtonClicked() {
         print("clicked")
     }
+    
+    @objc
+    func deleteSelectedItems() {
+        guard let selectedIndexPaths = self.collectionView.indexPathsForSelectedItems else { return}
+        
+        let tutorials = selectedIndexPaths.compactMap { self.dataSource.itemIdentifier(for: $0) }
+        
+        var currentSnapshot = self.dataSource.snapshot()
+        currentSnapshot.deleteItems(tutorials)
+        
+        self.dataSource.apply(currentSnapshot, animatingDifferences: true)
+        
+        self.isEditing.toggle()
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - CollectionView Configuration
+    
+    func configureCollectionViewLayout() -> UICollectionViewCompositionalLayout {
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(120))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        
+        return UICollectionViewCompositionalLayout(section: section)
+    }
+    
+    func configureDataSource() {
+        self.dataSource = UICollectionViewDiffableDataSource<QueuedSection, Tutorial>(collectionView: self.collectionView) { (collectionView: UICollectionView, indexPath: IndexPath, tutorial: Tutorial) in 
+            
+            guard let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: QueueCell.reuseIdentifier, for: indexPath) as? QueueCell else {
+                return nil
+            }
+            
+            cell.titleLabel.text = tutorial.title
+            cell.thumbnailImageView.image = tutorial.image
+            cell.thumbnailImageView.backgroundColor = tutorial.imageBackgroundColor
+            cell.publishDateLabel.text = tutorial.formattedDate(using: self.dateFormatter)
+            
+            return cell
+        }
+    }
+    
+    func configureSnapshot() {
+        var snapShot = NSDiffableDataSourceSnapshot<QueuedSection, Tutorial>()
+        snapShot.appendSections([.main])
+        
+        let queuedTutorials = DataSource.shared.tutorials.flatMap { $0.queuedTutorials }
+        snapShot.appendItems(queuedTutorials)
+        
+        self.dataSource.apply(snapShot, animatingDifferences: true)
+    }
 }
+
+
+
 
 // MARK: - Queue Events -
 
@@ -87,27 +172,23 @@ extension QueuedTutorialController {
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         
-        if isEditing {
-            navigationItem.rightBarButtonItems = nil
-            navigationItem.rightBarButtonItem = self.deleteButton
+        if self.isEditing {
+            self.navigationItem.rightBarButtonItems = nil
+            self.navigationItem.rightBarButtonItem = self.deleteButton
         } else {
-            navigationItem.rightBarButtonItem = nil
-            navigationItem.rightBarButtonItems = [self.applyUpdatesButton, self.updateButton]
+            self.navigationItem.rightBarButtonItem = nil
+            self.navigationItem.rightBarButtonItems = [self.applyUpdatesButton, self.updateButton]
         }
         
-        collectionView.allowsMultipleSelection = true
-        collectionView.indexPathsForVisibleItems.forEach { indexPath in
-            guard let cell = collectionView.cellForItem(at: indexPath) as? QueueCell else { return }
-            cell.isEditing = isEditing
+        self.collectionView.allowsMultipleSelection = true
+        self.collectionView.indexPathsForVisibleItems.forEach { indexPath in
+            guard let cell = self.collectionView.cellForItem(at: indexPath) as? QueueCell else { return }
+            cell.isEditing = self.isEditing
             
-            if !isEditing {
+            if !self.isEditing {
                 cell.isSelected = false
             }
         }
-    }
-    
-    @IBAction func deleteSelectedItems() {
-        
     }
     
     @IBAction func triggerUpdates() {

@@ -1,0 +1,17 @@
+//
+//  QueuedSection.swift
+//  RayWenderlichLibrary
+//
+//  Created by Alec on 08.09.23.
+//  Copyright © 2023 Ray Wenderlich. All rights reserved.
+//
+
+import Foundation
+
+// /////////////////////////////////////////////////////////////////////////
+// MARK: - QueuedSection -
+// /////////////////////////////////////////////////////////////////////////
+
+enum QueuedSection {
+    case main
+}
