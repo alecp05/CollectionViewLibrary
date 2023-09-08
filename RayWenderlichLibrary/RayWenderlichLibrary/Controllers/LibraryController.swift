@@ -41,7 +41,7 @@ import SnapKit
 // MARK: - LibraryController -
 // /////////////////////////////////////////////////////////////////////////
 
-class LibraryController: UIViewController {
+class LibraryController: UIViewController, UICollectionViewDelegate {
     
     // /////////////////////////////////////////////////////////////////////////
     // MARK: - Properties
@@ -63,6 +63,7 @@ class LibraryController: UIViewController {
         self.collectionView.collectionViewLayout = self.configureCollectionViewLayout()
         self.collectionView.register(TutorialCell.self, forCellWithReuseIdentifier: TutorialCell.reuseIdentifier)
         self.collectionView.register(TitleSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleSupplementaryView.reuseIdentifier)
+        self.collectionView.delegate = self
         
         self.view.addSubview(self.collectionView)
         self.makeConstraints()
@@ -89,7 +90,7 @@ class LibraryController: UIViewController {
             item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 10)
             
             
-            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.6), heightDimension: .fractionalHeight(0.3))
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.6), heightDimension: .fractionalHeight(0.28))
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
             
             let section = NSCollectionLayoutSection(group: group)
@@ -146,5 +147,18 @@ class LibraryController: UIViewController {
         }
         
         self.dataSource.apply(currentSnapshot, animatingDifferences: false)
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - UICollectionViewDelegate
+    // /////////////////////////////////////////////////////////////////////////
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let tutorial = self.dataSource.itemIdentifier(for: indexPath) {
+            
+            if let controller = TutorialDetailViewController(tutorial: tutorial) {
+                self.navigationController?.pushViewController(controller, animated: true)
+            }
+        }
     }
 }

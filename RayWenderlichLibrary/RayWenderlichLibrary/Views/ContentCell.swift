@@ -34,8 +34,51 @@
 ///
 
 import UIKit
+import SnapKit
+
+// /////////////////////////////////////////////////////////////////////////
+// MARK: - ContentCell -
+// /////////////////////////////////////////////////////////////////////////
 
 final class ContentCell: UICollectionViewCell {
-  static let reuseIdentifier = String(describing: ContentCell.self)
-  @IBOutlet weak var textLabel: UILabel!
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Properties
+    
+    static let reuseIdentifier = String(describing: ContentCell.self)
+    
+    var textLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.preferredFont(forTextStyle: .body)
+        return label
+    }()
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Life Cycle
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.backgroundColor = .systemGray.withAlphaComponent(0.2)
+        self.addSubview(self.textLabel)
+        
+        self.makeConstraints()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - ContentCell
+    
+    func makeConstraints() {
+        
+        self.textLabel.snp.makeConstraints() { make in
+            make.leading.equalToSuperview().inset(16)
+            make.verticalEdges.trailing.equalToSuperview()
+        }
+    }
+    
+    
 }

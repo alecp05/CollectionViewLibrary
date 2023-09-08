@@ -244,9 +244,6 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="erd-si-z7l">
                                         <rect key="frame" x="0.0" y="70" width="97" height="30"/>
                                         <state key="normal" title="Add To Queue"/>
-                                        <connections>
-                                            <action selector="toggleQueued" destination="irX-xb-ad7" eventType="touchUpInside" id="MdH-Ld-IP1"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -292,9 +289,6 @@
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="402" height="44"/>
-                                        <connections>
-                                            <outlet property="textLabel" destination="KZS-5D-22u" id="AMM-6o-3Tg"/>
-                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
@@ -316,10 +310,6 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="hmq-ZX-w11" id="1xH-93-DDe"/>
-                        <outlet property="publishDateLabel" destination="YYk-Mp-sbz" id="AlK-bL-lYC"/>
-                        <outlet property="queueButton" destination="erd-si-z7l" id="hYr-oL-2tO"/>
-                        <outlet property="titleLabel" destination="3r3-oF-TMt" id="WC5-gV-3C3"/>
-                        <outlet property="tutorialCoverImageView" destination="ecP-UP-6Yu" id="gas-WO-fHd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eel-5S-pPV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

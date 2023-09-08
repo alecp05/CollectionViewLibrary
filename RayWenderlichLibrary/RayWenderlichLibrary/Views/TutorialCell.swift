@@ -97,5 +97,4 @@ class TutorialCell: UICollectionViewCell {
             make.trailing.equalToSuperview().inset(16)
         }
     }
-    
 }
