@@ -111,6 +111,17 @@ class QueuedTutorialController: UIViewController {
         var currentSnapshot = self.dataSource.snapshot()
         currentSnapshot.deleteItems(tutorials)
         
+        // delete items from queue
+        let queuedTutorials = DataSource.shared.tutorials.flatMap { $0.queuedTutorials }
+        
+        for tutorial in queuedTutorials {
+            for item in tutorials {
+                if tutorial.identifier == item.identifier {
+                    tutorial.isQueued = false
+                }
+            }
+        }
+        
         self.dataSource.apply(currentSnapshot, animatingDifferences: true)
         
         self.isEditing.toggle()
