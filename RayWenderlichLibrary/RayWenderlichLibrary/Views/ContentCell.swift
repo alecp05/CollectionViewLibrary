@@ -79,6 +79,4 @@ final class ContentCell: UICollectionViewCell {
             make.verticalEdges.trailing.equalToSuperview()
         }
     }
-    
-    
 }

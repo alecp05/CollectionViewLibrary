@@ -24,21 +24,14 @@ final class BadgeSupplementaryView: UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        self.configure()
+       
+        self.backgroundColor = UIColor(named: "rw-green")
+        let radius = self.bounds.width / 2.0
+        self.layer.cornerRadius = radius
     }
     
     required init?(coder: NSCoder) {
         fatalError()
-    }
-    
-    // /////////////////////////////////////////////////////////////////////////
-    // MARK: - Functions
-    
-    private func configure() {
-        self.backgroundColor = UIColor(named: "rw-green")
-        let radius = self.bounds.width / 2.0
-        self.layer.cornerRadius = radius
     }
 }
 

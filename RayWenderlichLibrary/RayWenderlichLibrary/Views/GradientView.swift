@@ -35,23 +35,30 @@
 
 import UIKit
 
-class GradientView: UIView {
+// /////////////////////////////////////////////////////////////////////////
+// MARK: - GradientView -
+// /////////////////////////////////////////////////////////////////////////
 
-  let startColor = UIColor(white: 1.0, alpha: 0)
-  let midColor = UIColor(white: 0, alpha: 0.4)
-  var endColor = UIColor(white: 0, alpha: 0.8)
-  let startLocation: NSNumber = 0
-  let midLocation: NSNumber = 0.6
-  let endLocation: NSNumber = 1.0
-  let gradient = CAGradientLayer()
-  
-  override public func layoutSubviews() {
-    super.layoutSubviews()
+class GradientView: UIView {
     
-    gradient.colors    = [startColor.cgColor, midColor.cgColor, endColor.cgColor]
-    gradient.locations = [startLocation, midLocation, endLocation]
-    gradient.frame = bounds
-    layer.addSublayer(gradient)
-    layer.cornerRadius = 10
-  }
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Properties
+    
+    private let startColor = UIColor(white: 1.0, alpha: 0)
+    private let midColor = UIColor(white: 0, alpha: 0.4)
+    private var endColor = UIColor(white: 0, alpha: 0.8)
+    private let startLocation: NSNumber = 0
+    private let midLocation: NSNumber = 0.6
+    private let endLocation: NSNumber = 1.0
+    private let gradient = CAGradientLayer()
+    
+    override public func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.gradient.colors    = [self.startColor.cgColor, self.midColor.cgColor, self.endColor.cgColor]
+        self.gradient.locations = [self.startLocation, self.midLocation, self.endLocation]
+        self.gradient.frame = bounds
+        self.layer.addSublayer(self.gradient)
+        self.layer.cornerRadius = 10
+    }
 }

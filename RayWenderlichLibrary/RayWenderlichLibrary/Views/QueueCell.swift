@@ -98,6 +98,10 @@ class QueueCell: UICollectionViewCell {
         self.addSubview(self.publishDateLabel)
         self.addSubview(self.checkboxImageView)
         
+        if !self.isEditing {
+            self.checkboxImageView.isHidden = true
+        }
+        
         self.makeConstraints()
     }
     
@@ -125,9 +129,11 @@ class QueueCell: UICollectionViewCell {
             make.top.equalTo(self.titleLabel.snp.bottom).offset(10)
             make.leading.equalTo(self.thumbnailImageView.snp.trailing).offset(10)
             make.trailing.equalToSuperview()
+            make.bottom.lessThanOrEqualToSuperview()
         }
         
         self.checkboxImageView.snp.makeConstraints { make in
+            make.leading.top.greaterThanOrEqualToSuperview()
             make.bottom.trailing.equalToSuperview().inset(10)
         }
     }

@@ -46,8 +46,6 @@ final class TutorialDetailViewController: UIViewController {
     // /////////////////////////////////////////////////////////////////////////
     // MARK: - Properties
     
-    private let tutorial: Tutorial
-    
     var tutorialCoverImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -84,11 +82,14 @@ final class TutorialDetailViewController: UIViewController {
         return formatter
     }()
     
+    private let tutorial: Tutorial
+    
     // /////////////////////////////////////////////////////////////////////////
     // MARK: - Life Cycle
     
     init?(tutorial: Tutorial) {
         self.tutorial = tutorial
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -102,17 +103,11 @@ final class TutorialDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupView()
-        self.makeConstraints()
-    }
-    
-    // /////////////////////////////////////////////////////////////////////////
-    // MARK: - Functions
-    
-    private func setupView() {
+        
         self.view.backgroundColor = .white
         self.title = self.tutorial.title
         
+        // collectionView
         self.collectionView.register(ContentCell.self, forCellWithReuseIdentifier: ContentCell.reuseIdentifier)
         self.collectionView.register(TitleSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleSupplementaryView.reuseIdentifier)
         self.collectionView.collectionViewLayout =  self.configureCollectionView()
@@ -131,7 +126,12 @@ final class TutorialDetailViewController: UIViewController {
         self.view.addSubview(self.publishDateLabel)
         self.view.addSubview(self.queueButton)
         self.view.addSubview(self.collectionView)
+        
+        self.makeConstraints()
     }
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Functions
     
     func makeConstraints() {
         
@@ -182,7 +182,8 @@ final class TutorialDetailViewController: UIViewController {
     // /////////////////////////////////////////////////////////////////////////
     // MARK: - CollectionView Configuration
     
-    // can by styled how we want
+    // Sidenote: CollectionView can by styled how we want
+    
     func configureCollectionView() -> UICollectionViewLayout {
         let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             

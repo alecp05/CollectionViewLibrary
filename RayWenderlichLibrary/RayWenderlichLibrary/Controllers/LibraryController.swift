@@ -60,16 +60,16 @@ class LibraryController: UIViewController, UICollectionViewDelegate {
         self.view.backgroundColor = .white
         self.title = "Library"
         
+        // collectionView
         self.collectionView.collectionViewLayout = self.configureCollectionViewLayout()
         self.collectionView.register(TutorialCell.self, forCellWithReuseIdentifier: TutorialCell.reuseIdentifier)
         self.collectionView.register(TitleSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleSupplementaryView.reuseIdentifier)
         self.collectionView.delegate = self
+        self.configureDataSource()
+        self.configureSnapshot()
         
         self.view.addSubview(self.collectionView)
         self.makeConstraints()
-        
-        self.configureDataSource()
-        self.configureSnapshot()
     }
     
     func makeConstraints() {
@@ -80,7 +80,7 @@ class LibraryController: UIViewController, UICollectionViewDelegate {
     }
     
     // /////////////////////////////////////////////////////////////////////////
-    // MARK: - Functions
+    // MARK: - CollectionView Configuration
     
     func configureCollectionViewLayout() -> UICollectionViewCompositionalLayout {
         let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
@@ -90,7 +90,7 @@ class LibraryController: UIViewController, UICollectionViewDelegate {
             item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 10)
             
             
-            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.6), heightDimension: .fractionalHeight(0.28))
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.65), heightDimension: .fractionalHeight(0.28))
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
             
             let section = NSCollectionLayoutSection(group: group)

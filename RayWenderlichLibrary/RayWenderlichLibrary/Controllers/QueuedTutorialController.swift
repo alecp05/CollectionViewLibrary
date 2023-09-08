@@ -51,14 +51,14 @@ class QueuedTutorialController: UIViewController {
         return formatter
     }()
     
+    private static let badgeElementKind = "badge-element-kind"
+    
     private lazy var deleteButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.trash, target: self, action: #selector(deleteSelectedItems))
     private lazy var updateButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.clockwise"), style: .plain,target: self, action: #selector(triggerUpdates))
     private lazy var applyUpdatesButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "play.fill"), style: .plain, target: self, action: #selector(applyUpdates))
     
     private var collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private lazy var dataSource: UICollectionViewDiffableDataSource<QueuedSection, Tutorial> = UICollectionViewDiffableDataSource(collectionView: self.collectionView, cellProvider: {_,_,_  in return nil })
-    
-    private static let badgeElementKind = "badge-element-kind"
     
     // /////////////////////////////////////////////////////////////////////////
     // MARK: - QueuedTutorialController
@@ -67,16 +67,13 @@ class QueuedTutorialController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        self.setupView()
-        
-        self.makeConstraints()
-    }
-    
-    private func setupView() {
         self.title = "Queue"
-        self.navigationItem.leftBarButtonItem = editButtonItem
-        navigationItem.rightBarButtonItems = [self.applyUpdatesButton, self.updateButton]
         
+        // navigationbar
+        self.navigationItem.leftBarButtonItem = editButtonItem
+        self.navigationItem.rightBarButtonItems = [self.applyUpdatesButton, self.updateButton]
+        
+        // collectionView
         self.collectionView.collectionViewLayout = self.configureCollectionViewLayout()
         self.collectionView.register(QueueCell.self, forCellWithReuseIdentifier: QueueCell.reuseIdentifier)
         self.collectionView.register(BadgeSupplementaryView.self, forSupplementaryViewOfKind: QueuedTutorialController.badgeElementKind, withReuseIdentifier: BadgeSupplementaryView.reuseIdentifier)
@@ -84,6 +81,8 @@ class QueuedTutorialController: UIViewController {
         self.configureDataSource()
         
         self.view.addSubview(self.collectionView)
+        
+        self.makeConstraints()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -102,11 +101,6 @@ class QueuedTutorialController: UIViewController {
     
     // /////////////////////////////////////////////////////////////////////////
     // MARK: - Functions
-    
-    @objc
-    func deleteButtonClicked() {
-        print("clicked")
-    }
     
     @objc
     func deleteSelectedItems() {
@@ -182,7 +176,7 @@ class QueuedTutorialController: UIViewController {
         let item = NSCollectionLayoutItem(layoutSize: itemSize, supplementaryItems: [badge])
         item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(120))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(140))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
@@ -234,11 +228,17 @@ class QueuedTutorialController: UIViewController {
 }
 
 
-
-
 // MARK: - Queue Events -
 
+// /////////////////////////////////////////////////////////////////////////
+// MARK: - QueuedTutorialController.Extension -
+// /////////////////////////////////////////////////////////////////////////
+
 extension QueuedTutorialController {
+    
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Functions
+    
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         

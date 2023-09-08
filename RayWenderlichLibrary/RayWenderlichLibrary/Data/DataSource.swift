@@ -23,6 +23,9 @@ class DataSource {
     
     private let decoder = PropertyListDecoder()
     
+    // /////////////////////////////////////////////////////////////////////////
+    // MARK: - Life Cycle
+    
     private init() {
         guard let url = Bundle.main.url(forResource: "Tutorials", withExtension: "plist"),
               let data = try? Data(contentsOf: url),

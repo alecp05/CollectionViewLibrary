@@ -64,6 +64,13 @@ class TutorialCell: UICollectionViewCell {
         return label
     }()
     
+    var gradientView: GradientView = {
+        let view = GradientView()
+        view.layer.cornerRadius = 10
+        view.clipsToBounds = true
+        return view
+    }()
+    
     // /////////////////////////////////////////////////////////////////////////
     // MARK: - Life Cycle
     
@@ -71,6 +78,7 @@ class TutorialCell: UICollectionViewCell {
         super.init(frame: frame)
 
         self.addSubview(self.thumbnailImageView)
+        self.addSubview(self.gradientView)
         self.addSubview(self.titleLabel)
         
         self.makeConstraints()
@@ -89,6 +97,13 @@ class TutorialCell: UICollectionViewCell {
             make.top.equalToSuperview()
             make.horizontalEdges.equalToSuperview()
             make.height.equalTo(192)
+        }
+        
+        
+        self.gradientView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.horizontalEdges.equalToSuperview()
+            make.height.equalTo(self.thumbnailImageView.snp.height)
         }
         
         self.titleLabel.snp.makeConstraints() { make in
